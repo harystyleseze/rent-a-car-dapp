@@ -32,9 +32,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build contract clients
+      - name: Install contract client dependencies
         run: |
-          npm run install:contracts
+          if [ -d "packages/rent_a_car" ]; then
+            cd packages/rent_a_car && npm install && npm run build
+          else
+            echo "Contract client not found - skipping"
+          fi
 
       - name: Build app
         run: npm run build

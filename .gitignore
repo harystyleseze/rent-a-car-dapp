@@ -37,6 +37,9 @@ lerna-debug.log*
 
 # generated contract clients
 packages/*
+# Exception: commit rent_a_car client for GitHub Pages deployment
+!packages/rent_a_car/
+packages/rent_a_car/node_modules/
 # if you have other workspace packages, add them here
 !packages/.gitkeep
 
