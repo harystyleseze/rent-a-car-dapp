@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useStellarAccounts } from "../providers/StellarAccountProvider";
-import AccountCard from "./AccountCard";
-import { stellarService } from "../services/stellar.service";
-import { AccountBalance, IAccount } from "../interfaces/account";
-import { saveAccountToStorage } from "../utils/local-storage";
+import { useStellarAccounts } from "../providers/StellarAccountProvider.tsx";
+import AccountCard from "./AccountCard.tsx";
+import { stellarService } from "../services/stellar.service.ts";
+import { AccountBalance, IAccount } from "../interfaces/account.ts";
+import { saveAccountToStorage } from "../utils/local-storage.ts";
 
 export default function AccountManager() {
   const { getAccount } = useStellarAccounts();

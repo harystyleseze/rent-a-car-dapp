@@ -1,65 +1,40 @@
-import { AccountBalance } from "../interfaces/account";
+import { AccountBalance } from "../interfaces/account.ts";
 
 interface BalanceTableProps {
   balances: AccountBalance[];
-  variant?: "primary" | "secondary";
 }
 
-export default function BalanceTable({
-  balances,
-  variant = "primary",
-}: BalanceTableProps) {
-  if (!balances || balances.length === 0) return null;
-
-  const isPrimary = variant === "primary";
-  const headerBg = isPrimary ? "bg-indigo-50" : "bg-emerald-50";
-  const headerText = isPrimary ? "text-indigo-900" : "text-emerald-900";
-  const rowHover = isPrimary
-    ? "hover:bg-indigo-50/50"
-    : "hover:bg-emerald-50/50";
+export default function BalanceTable({ balances }: BalanceTableProps) {
+  if (!balances || balances.length === 0) {
+    return <div className="text-gray-500 text-sm">No balances available</div>;
+  }
 
   return (
-    <div className="pt-6 border-t border-slate-200">
-      <h3 className="text-sm font-semibold text-slate-600 uppercase tracking-wide mb-3">
-        Account Balances
-      </h3>
-
-      <div className="overflow-hidden rounded-xl border-2 border-slate-200">
-        <table className="w-full text-center">
-          <thead className={`text-center ${headerBg}`}>
-            <tr>
-              <th
-                className={`px-4 py-3 text-xs font-bold uppercase tracking-wider ${headerText}`}
-              >
-                Amount
-              </th>
-              <th
-                className={`px-4 py-3 text-xs font-bold uppercase tracking-wider ${headerText}`}
-              >
-                Asset Code
-              </th>
+    <div className="overflow-x-auto">
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-50">
+          <tr>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Asset
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Amount
+            </th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {balances.map((balance) => (
+            <tr key={`${balance.assetCode}-${balance.amount}`}>
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                {balance.assetCode}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {parseFloat(balance.amount).toFixed(7)}
+              </td>
             </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-slate-200">
-            {balances.map((balance) => (
-              <tr
-                key={balance.assetCode}
-                className={`transition-colors ${rowHover}`}
-              >
-                <td className="px-4 py-3 text-lg font-bold text-slate-900">
-                  {Number(balance.amount).toLocaleString("en-US", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 7,
-                  })}
-                </td>
-                <td className="px-4 py-3 text-sm font-semibold text-slate-600">
-                  {balance.assetCode}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

@@ -1,5 +1,5 @@
-import { IAccount } from "../interfaces/account";
-import BalanceTable from "./BalanceTable";
+import { IAccount } from "../interfaces/account.ts";
+import BalanceTable from "./BalanceTable.tsx";
 
 interface AccountCardProps {
   name: string;
@@ -98,7 +98,7 @@ export default function AccountCard({
         </div>
 
         {account.balances && account.balances.length > 0 && (
-          <BalanceTable balances={account.balances} variant={variant} />
+          <BalanceTable balances={account.balances} />
         )}
       </div>
     </div>
