@@ -1,5 +1,7 @@
 import { createContext, use, useCallback, useMemo, useState } from "react";
-import { IAccount } from "../interfaces/account";
+import { IAccount } from "../interfaces/account.ts";
+import { ICar } from "../interfaces/car.ts";
+import { UserRole } from "../interfaces/user-role.ts";
 import {
   getAccountFromStorage,
   getCurrentAccountFromStorage,
@@ -11,6 +13,14 @@ interface StellarContextType {
   setCurrentAccount: (name: string) => void;
   getAccount: (name: string) => IAccount | null;
   getCurrentAccountData: () => IAccount | null;
+  walletAddress: string;
+  setWalletAddress: (address: string) => void;
+  selectedRole: UserRole;
+  setSelectedRole: (role: UserRole) => void;
+  cars: ICar[];
+  setCars: (cars: ICar[] | ((prev: ICar[]) => ICar[])) => void;
+  hashId: string | null;
+  setHashId: (hash: string | null) => void;
 }
 
 const StellarAccountContext = createContext<StellarContextType | undefined>(
@@ -34,6 +44,10 @@ export const StellarAccountProvider: React.FC<{
   const [currentAccount, setCurrentAccountState] = useState<string>(() =>
     getCurrentAccountFromStorage(),
   );
+  const [walletAddress, setWalletAddress] = useState<string>("");
+  const [selectedRole, setSelectedRole] = useState<UserRole>(UserRole.RENTER);
+  const [cars, setCars] = useState<ICar[]>([]);
+  const [hashId, setHashId] = useState<string | null>(null);
 
   const setCurrentAccount = useCallback((name: string) => {
     setCurrentAccountState(name);
@@ -55,8 +69,25 @@ export const StellarAccountProvider: React.FC<{
       setCurrentAccount,
       getAccount,
       getCurrentAccountData,
+      walletAddress,
+      setWalletAddress,
+      selectedRole,
+      setSelectedRole,
+      cars,
+      setCars,
+      hashId,
+      setHashId,
     }),
-    [currentAccount, setCurrentAccount, getAccount, getCurrentAccountData],
+    [
+      currentAccount,
+      setCurrentAccount,
+      getAccount,
+      getCurrentAccountData,
+      walletAddress,
+      selectedRole,
+      cars,
+      hashId,
+    ],
   );
 
   return (

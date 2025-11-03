@@ -1,26 +1,35 @@
 import { IAccount } from "../interfaces/account";
 
-const STORAGE_PREFIX = "account_";
-const CURRENT_ACCOUNT_KEY = "current_account";
+const STORAGE_KEYS = {
+  ACCOUNTS: "stellar_accounts",
+  CURRENT_ACCOUNT: "current_account",
+} as const;
 
-export const saveAccountToStorage = (name: string, account: IAccount) => {
-  localStorage.setItem(STORAGE_PREFIX + name, JSON.stringify(account));
+export const saveAccountToStorage = (name: string, account: IAccount): void => {
+  const accounts = getAccountsFromStorage();
+  accounts[name] = account;
+  localStorage.setItem(STORAGE_KEYS.ACCOUNTS, JSON.stringify(accounts));
 };
 
 export const getAccountFromStorage = (name: string): IAccount | null => {
-  const data = localStorage.getItem(STORAGE_PREFIX + name);
-  if (!data) return null;
-  return JSON.parse(data) as IAccount;
+  const accounts = getAccountsFromStorage();
+  return accounts[name] || null;
 };
 
-export const saveCurrentAccount = (name: string | null) => {
-  if (name) {
-    localStorage.setItem(CURRENT_ACCOUNT_KEY, name);
-  } else {
-    localStorage.removeItem(CURRENT_ACCOUNT_KEY);
-  }
+export const getAccountsFromStorage = (): Record<string, IAccount> => {
+  const data = localStorage.getItem(STORAGE_KEYS.ACCOUNTS);
+  return data ? (JSON.parse(data) as Record<string, IAccount>) : {};
+};
+
+export const saveCurrentAccount = (name: string): void => {
+  localStorage.setItem(STORAGE_KEYS.CURRENT_ACCOUNT, name);
 };
 
 export const getCurrentAccountFromStorage = (): string => {
-  return localStorage.getItem(CURRENT_ACCOUNT_KEY) as string;
+  return localStorage.getItem(STORAGE_KEYS.CURRENT_ACCOUNT) || "";
+};
+
+export const clearStorage = (): void => {
+  localStorage.removeItem(STORAGE_KEYS.ACCOUNTS);
+  localStorage.removeItem(STORAGE_KEYS.CURRENT_ACCOUNT);
 };
