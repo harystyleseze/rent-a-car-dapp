@@ -7,6 +7,7 @@ import tailwindcss from "@tailwindcss/vite";
 // https://vite.dev/config/
 export default defineConfig(() => {
   return {
+    base: process.env.NODE_ENV === "production" ? "/rent-a-car-dapp/" : "/",
     plugins: [
       react(),
       tailwindcss(),
@@ -20,6 +21,7 @@ export default defineConfig(() => {
     ],
     build: {
       target: "esnext",
+      outDir: "dist",
     },
     optimizeDeps: {
       exclude: ["@stellar/stellar-xdr-json"],

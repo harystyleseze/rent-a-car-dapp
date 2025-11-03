@@ -7,8 +7,10 @@
     "dev": "concurrently \"stellar scaffold watch --build-clients\" \"vite\"",
     "start": "concurrently \"stellar scaffold watch --build-clients\" \"vite\"",
     "build": "tsc -b && vite build",
+    "build:gh-pages": "NODE_ENV=production npm run build",
     "install:contracts": "npm install --workspace=packages && npm run build --workspace=packages",
     "preview": "vite preview",
+    "deploy": "npm run build:gh-pages && gh-pages -d dist",
     "lint": "eslint .",
     "format": "prettier . --write",
     "prepare": "husky"
